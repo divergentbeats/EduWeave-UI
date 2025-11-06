@@ -1,5 +1,5 @@
 {
-  "usn": "1RV22CS001",
+  "usn": "1VV22CS001",
   "name": "Aarav Nair",
   "semester": 5,
   "domain_interest": "AI/ML",
@@ -8,4 +8,3 @@
   "projects": [{"name": "Smart Attendance", "desc": "AI-based attendance tracker"}],
   "skills": ["Python", "TensorFlow", "Data Visualization"]
 }
-

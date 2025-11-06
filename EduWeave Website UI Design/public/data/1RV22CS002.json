@@ -1,5 +1,5 @@
 {
-  "usn": "1RV22CS002",
+  "usn": "1VV22CS002",
   "name": "Diya Menon",
   "semester": 6,
   "domain_interest": "Web Development",
@@ -8,4 +8,3 @@
   "projects": [{"name": "E‑Commerce PWA", "desc": "React + Service Workers"}],
   "skills": ["React", "TypeScript", "TailwindCSS"]
 }
-

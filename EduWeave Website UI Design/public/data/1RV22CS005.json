@@ -1,5 +1,5 @@
 {
-  "usn": "1RV22CS005",
+  "usn": "1VV22CS005",
   "name": "Ishaan Patel",
   "semester": 5,
   "domain_interest": "Cybersecurity",
@@ -8,4 +8,3 @@
   "projects": [{"name": "Threat Hunter", "desc": "SIEM rules and detections"}],
   "skills": ["Python", "Burp Suite", "SIEM"]
 }
-

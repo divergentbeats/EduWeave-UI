@@ -1,5 +1,5 @@
 {
-  "usn": "1RV22CS004",
+  "usn": "1VV22CS004",
   "name": "Kavya Rao",
   "semester": 7,
   "domain_interest": "Cloud",
@@ -8,4 +8,3 @@
   "projects": [{"name": "Infra as Code", "desc": "Terraform on AWS"}],
   "skills": ["AWS", "Docker", "Terraform"]
 }
-

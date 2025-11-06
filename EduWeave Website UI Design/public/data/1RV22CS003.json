@@ -1,5 +1,5 @@
 {
-  "usn": "1RV22CS003",
+  "usn": "1VV22CS003",
   "name": "Rohan Iyer",
   "semester": 4,
   "domain_interest": "IoT",
@@ -8,4 +8,3 @@
   "projects": [{"name": "Smart Farm Nodes", "desc": "ESP32 sensor mesh"}],
   "skills": ["C++", "ESP32", "MQTT"]
 }
-
