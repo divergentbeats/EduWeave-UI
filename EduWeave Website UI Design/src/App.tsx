@@ -13,6 +13,7 @@ import { AIEchoPage } from "./components/pages/AIEchoPage";
 import { AchievementsPage } from "./components/pages/AchievementsPage";
 import { CommunityHubPage } from "./components/pages/CommunityHubPage";
 import { SettingsPage } from "./components/pages/SettingsPage";
+import AdminDashboard from "./components/pages/AdminDashboard";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -79,6 +80,7 @@ export default function App() {
         <Route path="/student-entry" element={<StudentEntry />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
