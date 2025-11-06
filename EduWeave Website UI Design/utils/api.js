@@ -1,3 +1,22 @@
+export async function getStudentData(usn) {
+  const res = await fetch(`/data/${usn}.json`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Student JSON not found');
+  return await res.json();
+}
+
+export async function listStudents() {
+  const res = await fetch('/data/students_list.csv', { cache: 'no-store' });
+  if (!res.ok) return [];
+  const text = await res.text();
+  return text
+    .trim()
+    .split(/\r?\n/)
+    .slice(1)
+    .map((line) => {
+      const [usn, name, semester, domain] = line.split(',');
+      return { usn, name, semester: Number(semester), domain };
+    });
+}
 export async function getInsights(studentData) {
   try {
     const response = await fetch('http://127.0.0.1:5000/generate_insights', {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -21,8 +22,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 dark:from-[#0b0b12] dark:via-[#0b0b12] dark:to-[#0b0b12] flex items-center justify-center p-4 transition-colors">
+      {/* Animated background orbs */}
+      <motion.div initial={{opacity:0, scale:.9}} animate={{opacity:.6, scale:1}} transition={{duration:1.2}}
+        className="pointer-events-none absolute -top-20 -left-20 w-64 h-64 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 blur-3xl opacity-30" />
+      <motion.div initial={{opacity:0, scale:.9}} animate={{opacity:.5, scale:1}} transition={{duration:1.2, delay:.2}}
+        className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 blur-3xl opacity-30" />
+      <div className="bg-white dark:bg-[#12121b] text-gray-900 dark:text-indigo-100 p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-gray-200 dark:border-gray-800 transition-colors">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             EduWeave Login

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from "react";
 import Login from "../pages/login";
 import StudentEntry from "../pages/student-entry";
+import ProfilePage from "../pages/profile";
 import { AppSidebar } from "./components/dashboard/AppSidebar";
 import { TopBar } from "./components/dashboard/TopBar";
 import { DashboardPage } from "./components/pages/DashboardPage";
@@ -41,7 +42,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 dark:from-[#0b0b12] dark:via-[#0b0b12] dark:to-[#0b0b12] flex transition-colors">
       {/* Sidebar */}
       <AppSidebar
         isOpen={sidebarOpen}
@@ -76,6 +77,7 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/student-entry" element={<StudentEntry />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
