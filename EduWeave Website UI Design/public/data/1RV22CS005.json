@@ -1,0 +1,11 @@
+{
+  "usn": "1RV22CS005",
+  "name": "Ishaan Patel",
+  "semester": 5,
+  "domain_interest": "Cybersecurity",
+  "attendance": {"Security": 89, "OS": 84, "Networks": 86},
+  "grades": {"Security": 9.0, "OS": 8.3, "Networks": 8.5},
+  "projects": [{"name": "Threat Hunter", "desc": "SIEM rules and detections"}],
+  "skills": ["Python", "Burp Suite", "SIEM"]
+}
+

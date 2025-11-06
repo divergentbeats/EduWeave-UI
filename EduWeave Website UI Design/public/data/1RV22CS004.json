@@ -1,0 +1,11 @@
+{
+  "usn": "1RV22CS004",
+  "name": "Kavya Rao",
+  "semester": 7,
+  "domain_interest": "Cloud",
+  "attendance": {"Cloud": 93, "DevOps": 88, "DBMS": 86},
+  "grades": {"Cloud": 9.2, "DevOps": 8.6, "DBMS": 8.4},
+  "projects": [{"name": "Infra as Code", "desc": "Terraform on AWS"}],
+  "skills": ["AWS", "Docker", "Terraform"]
+}
+

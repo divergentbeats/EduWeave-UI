@@ -2,6 +2,10 @@ import { AttendanceCard } from "../dashboard/AttendanceCard";
 import { GradesCard } from "../dashboard/GradesCard";
 import { ProfileCard } from "../dashboard/ProfileCard";
 import { Lightbulb, TrendingUp, AlertCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+// allow JS util import
+// @ts-ignore
+import { getStudentData, listStudents } from "../../../utils/api";
 
 const quickTips = [
   "💡 Focus on improving DBMS attendance this week to stay above 80%",
@@ -11,14 +15,65 @@ const quickTips = [
 ];
 
 export function DashboardPage() {
+  const [studentData, setStudentData] = useState<any>(null);
+  const [allStudents, setAllStudents] = useState<Array<{usn:string;name:string}>>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const raw = localStorage.getItem('currentStudent');
+        const current = raw ? JSON.parse(raw) : null;
+        if (current?.usn) {
+          const data = await getStudentData(current.usn);
+          setStudentData(data);
+        }
+        const list = await listStudents();
+        setAllStudents(list);
+      } catch {}
+    }
+    load();
+  }, []);
+
+  const avgAttendance = useMemo(() => {
+    if (!studentData?.attendance) return 88;
+    const vals = Object.values(studentData.attendance as Record<string, number>);
+    return Math.round(vals.reduce((a: number, b: any) => a + Number(b), 0) / Math.max(1, vals.length));
+  }, [studentData]);
+
+  const currentCgpa = useMemo(() => {
+    if (!studentData?.grades) return 8.7;
+    const vals = Object.values(studentData.grades as Record<string, number>);
+    return Number((vals.reduce((a: number, b: any) => a + Number(b), 0) / Math.max(1, vals.length)).toFixed(1));
+  }, [studentData]);
+
+  const onSelectStudent = async (usn: string) => {
+    const found = allStudents.find((s) => s.usn === usn);
+    const payload = { usn, name: found?.name };
+    localStorage.setItem('currentStudent', JSON.stringify(payload));
+    const data = await getStudentData(usn);
+    setStudentData(data);
+  };
+
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Welcome Header */}
-      <div>
+      <div className="flex items-center justify-between gap-4">
         <h1 className="mb-2" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 700 }}>
           Dashboard Overview
         </h1>
-        <p className="text-gray-600">Your academic progress at a glance</p>
+        <div className="flex items-center gap-2 ml-auto">
+          <label className="text-sm text-gray-600 dark:text-indigo-200">Switch student:</label>
+          <select
+            className="px-3 py-2 rounded-xl bg-white dark:bg-[#14162a] border border-gray-200 dark:border-[#1c2035cc] text-sm"
+            value={studentData?.usn || ''}
+            onChange={(e) => onSelectStudent(e.target.value)}
+          >
+            <option value="" disabled>Select</option>
+            {allStudents.map(s => (
+              <option key={s.usn} value={s.usn}>{s.usn} — {s.name}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Profile Summary */}
@@ -34,7 +89,7 @@ export function DashboardPage() {
             </div>
             <span className="text-xs bg-white/20 px-3 py-1 rounded-full">Current</span>
           </div>
-          <div className="text-4xl mb-2" style={{ fontWeight: 800 }}>8.7</div>
+          <div className="text-4xl mb-2" style={{ fontWeight: 800 }}>{currentCgpa}</div>
           <div className="text-indigo-100 text-sm">Current CGPA</div>
           <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-1 text-sm">
             <TrendingUp className="w-4 h-4 text-green-300" />
@@ -52,7 +107,7 @@ export function DashboardPage() {
             </div>
             <AlertCircle className="w-5 h-5 text-amber-500" />
           </div>
-          <div className="text-4xl mb-2 text-purple-600" style={{ fontWeight: 800 }}>88%</div>
+          <div className="text-4xl mb-2 text-purple-600" style={{ fontWeight: 800 }}>{avgAttendance}%</div>
           <div className="text-gray-600 text-sm">Average Attendance</div>
           <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-500">
             DBMS needs attention
@@ -94,8 +149,8 @@ export function DashboardPage() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AttendanceCard />
-        <GradesCard />
+        <AttendanceCard data={studentData?.attendance} />
+        <GradesCard data={studentData?.grades} />
       </div>
 
       {/* AI Quick Tips */}

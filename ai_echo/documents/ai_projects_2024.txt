@@ -1,0 +1,6 @@
+In 2024, students completed three standout AI projects that directly improved learning outcomes and placements. The first was a campus-wide "Smart Attendance" system using computer vision with lightweight YOLOv8 models, deployed on edge devices in labs. It cut manual attendance errors by 78% and became a capstone case study in two departments, leading to three internship offers from an ed‑tech partner.
+
+The second project, a "Placement Q&A Copilot," fine-tuned a small LLM on anonymized past interview transcripts and company FAQs. Built with retrieval-augmented generation (RAG) and vector search, it helped final-year students practice domain questions realistically. Over the semester, usage analytics showed a 24% rise in mock interview pass rates.
+
+The third initiative was an "Adaptive Learning Recommender" for DBMS and Networks courses. Using a simple matrix factorization baseline and then LightFM with hybrid features, it recommended problem sets based on prior performance and time-on-task signals. Course completion rates improved by 13%, and students reported clearer progression paths in end‑term surveys.
+

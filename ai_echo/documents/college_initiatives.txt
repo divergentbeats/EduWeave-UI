@@ -1,0 +1,6 @@
+The college expanded mentorship programs by assigning each student a faculty mentor and a senior-student buddy. Monthly 1:1 check-ins focused on course planning, project scope, and interview readiness. Attendance stabilized in tougher courses, and early alerts helped reduce last-minute backlogs.
+
+Bootcamps were run in two waves: a fundamentals track (Python, Git, SQL) and an applied track (web services, ML basics, cloud deploy). Each ended with a mini capstone graded on a clear rubric. Students who completed both tracks showed an average 0.6 GPA improvement in core computing subjects.
+
+To showcase outcomes, the institute hosted a mid-semester project fair and a larger year-end demo day. External judges scored clarity, originality, and user validation. Winning teams saw direct outreach from hiring partners, and open-source repos from the fair gained steady stars, improving student portfolios for internships and research assistant roles.
+

@@ -1,0 +1,11 @@
+{
+  "usn": "1RV22CS003",
+  "name": "Rohan Iyer",
+  "semester": 4,
+  "domain_interest": "IoT",
+  "attendance": {"IoT": 88, "CN": 82, "ES": 91},
+  "grades": {"IoT": 8.8, "CN": 8.1, "ES": 9.0},
+  "projects": [{"name": "Smart Farm Nodes", "desc": "ESP32 sensor mesh"}],
+  "skills": ["C++", "ESP32", "MQTT"]
+}
+

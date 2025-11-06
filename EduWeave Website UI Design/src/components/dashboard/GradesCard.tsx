@@ -1,22 +1,25 @@
 import { TrendingUp } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const gradesData = [
-  { semester: "Sem 1", cgpa: 7.8 },
-  { semester: "Sem 2", cgpa: 8.1 },
-  { semester: "Sem 3", cgpa: 8.3 },
-  { semester: "Sem 4", cgpa: 8.5 },
-  { semester: "Sem 5", cgpa: 8.4 },
-  { semester: "Sem 6", cgpa: 8.7 }
-];
+type Props = { data?: Record<string, number> };
 
-export function GradesCard() {
+export function GradesCard({ data }: Props) {
+  const gradesData = data
+    ? Object.entries(data).map(([subject, value]) => ({ semester: subject, cgpa: Number(value) }))
+    : [
+        { semester: "Sem 1", cgpa: 7.8 },
+        { semester: "Sem 2", cgpa: 8.1 },
+        { semester: "Sem 3", cgpa: 8.3 },
+        { semester: "Sem 4", cgpa: 8.5 },
+        { semester: "Sem 5", cgpa: 8.4 },
+        { semester: "Sem 6", cgpa: 8.7 }
+      ];
   const currentCGPA = gradesData[gradesData.length - 1].cgpa;
-  const previousCGPA = gradesData[gradesData.length - 2].cgpa;
+  const previousCGPA = gradesData[Math.max(0, gradesData.length - 2)].cgpa;
   const improvement = currentCGPA - previousCGPA;
 
   return (
-    <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+    <div className="p-6 rounded-2xl bg-white dark:bg-[#0e1020] border border-gray-200 dark:border-[#1c2035cc] shadow-lg hover:shadow-xl transition-all duration-300">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -25,7 +28,7 @@ export function GradesCard() {
           </div>
           <div>
             <h4 style={{ fontWeight: 700 }}>Your CGPA Progress</h4>
-            <p className="text-sm text-gray-500">Semester-wise performance</p>
+            <p className="text-sm text-gray-500 dark:text-indigo-200">Performance trend</p>
           </div>
         </div>
         <div className="text-right">

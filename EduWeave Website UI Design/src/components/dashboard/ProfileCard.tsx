@@ -1,7 +1,9 @@
 import { ExternalLink, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function ProfileCard() {
+  const navigate = useNavigate();
   return (
     <div className="p-6 rounded-2xl bg-gradient-to-br from-white to-indigo-50 border border-indigo-200 shadow-lg hover:shadow-xl transition-all duration-300">
       <div className="flex items-start gap-4">
@@ -43,7 +45,11 @@ export function ProfileCard() {
           </div>
 
           {/* Action Button */}
-          <Button variant="outline" className="rounded-full border-indigo-300 hover:border-indigo-500 hover:bg-indigo-50 group">
+          <Button
+            variant="outline"
+            className="rounded-full border-indigo-300 hover:border-indigo-500 hover:bg-indigo-50 group"
+            onClick={() => navigate('/profile')}
+          >
             View Full Profile
             <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
