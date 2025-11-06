@@ -1,0 +1,6 @@
+In 2023, the college ran a focused placement-drive calendar spanning company talks, alumni mentoring circles, and weekend problem-solving sprints. Core companies were scheduled earlier with prep tracks in OS, DBMS, and DSA, while product startups visited later with system design and portfolio reviews. Recruiters consistently highlighted communication and project depth as differentiators.
+
+Two interventions correlated most strongly with higher placement rates: targeted resume workshops and panel-style mock interviews. Resume workshops paired students with industry mentors to rewrite bullets with measurable outcomes, reducing vague descriptions. Mock interviews, run in two rounds (technical + HR) with structured feedback rubrics, improved candidate confidence and answer structure. Students who attended at least two resume workshops and two mock interview cycles had a 19–23% higher offer rate compared to peers.
+
+Supplementary activities like coding contests and weekend hackathons supported momentum, but the biggest gains came from repeated practice with realistic, time-boxed interviews and data-backed resume refinement. The placement cell plans to scale these formats with more alumni volunteers next year.
+

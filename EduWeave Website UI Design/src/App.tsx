@@ -1,4 +1,7 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from "react";
+import Login from "../pages/login";
+import StudentEntry from "../pages/student-entry";
 import { AppSidebar } from "./components/dashboard/AppSidebar";
 import { TopBar } from "./components/dashboard/TopBar";
 import { DashboardPage } from "./components/pages/DashboardPage";
@@ -10,7 +13,7 @@ import { AchievementsPage } from "./components/pages/AchievementsPage";
 import { CommunityHubPage } from "./components/pages/CommunityHubPage";
 import { SettingsPage } from "./components/pages/SettingsPage";
 
-export default function App() {
+function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
 
@@ -63,5 +66,18 @@ export default function App() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/student-entry" element={<StudentEntry />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
