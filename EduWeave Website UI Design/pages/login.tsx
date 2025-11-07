@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Users, Shield } from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './login.css'; // Import custom styles for the calendar
 
 const Login = () => {
   const navigate = useNavigate();
   const [usn, setUsn] = useState<string>('');
   const [dob, setDob] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [loginType, setLoginType] = useState('student'); // 'student' or 'admin'
 
   const handleLogin = () => {
     if (loginType === 'admin') {
-      if (usn === 'admin' && dob === 'admin') {
+      if (usn === 'admin' && password === 'admin') {
         navigate('/admin-dashboard');
       } else {
         alert('Invalid admin credentials');
@@ -73,16 +77,37 @@ const Login = () => {
               className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#1f1f2b] text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-violet-500 focus:outline-none transition-colors"
             />
           </div>
-          <div className="relative">
-            <Calendar className="absolute w-5 h-5 text-gray-400 top-1/2 left-4 -translate-y-1/2" />
-            <input
-              type={loginType === 'student' ? 'date' : 'password'}
-              placeholder="Date of Birth"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#1f1f2b] text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-violet-500 focus:outline-none transition-colors"
-            />
-          </div>
+          {loginType === 'student' ? (
+            <div className="relative">
+              <Calendar className="absolute w-5 h-5 text-gray-400 top-1/2 left-4 -translate-y-1/2 z-10" />
+              <DatePicker
+                selected={dob ? new Date(dob) : null}
+                onChange={(date: Date | null) => setDob(date ? date.toISOString().split('T')[0] : '')}
+                placeholderText="Select Date of Birth"
+                showYearDropdown
+                showMonthDropdown
+                dropdownMode="select"
+                maxDate={new Date()}
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#1f1f2b] text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-violet-500 focus:outline-none transition-colors cursor-pointer"
+                wrapperClassName="w-full"
+                calendarClassName="dark:bg-[#1f1f2b] dark:border-gray-700 dark:text-white"
+                popperClassName="dark:bg-[#1f1f2b] dark:border-gray-700 dark:text-white z-50"
+                dateFormat="dd/MM/yyyy"
+                showPopperArrow={false}
+              />
+            </div>
+          ) : (
+            <div className="relative">
+              <Shield className="absolute w-5 h-5 text-gray-400 top-1/2 left-4 -translate-y-1/2" />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#1f1f2b] text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-violet-500 focus:outline-none transition-colors"
+              />
+            </div>
+          )}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

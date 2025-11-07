@@ -1,6 +1,6 @@
-# SynapseIQ
+# EduWeave
 
-SynapseIQ is an AI-powered student intelligence dashboard that unifies academic data (attendance, grades, skills, projects, achievements) into visual analytics and personalized AI insights. It also includes a RAG-based chatbot (AI Echo) trained on institutional documents to answer academic or project-related queries.
+EduWeave is an AI-powered student intelligence dashboard that unifies academic data (attendance, grades, skills, projects, achievements) into visual analytics and personalized AI insights. It also includes a RAG-based chatbot (AI Echo) trained on institutional documents to answer academic or project-related queries.
 
 ## Tech Stack
 - Frontend: React + Chart.js + TailwindCSS + Axios + React Router DOM

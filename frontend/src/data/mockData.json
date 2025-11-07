@@ -1,0 +1,19 @@
+{
+  "attendance": { "AI": 87, "DBMS": 92, "Maths": 78 },
+  "grades": { "AI": 9.1, "DBMS": 8.5, "Maths": 7.8 },
+  "skills": { "AI": 80, "Python": 95, "ML": 88 },
+  "projects": ["AI Chatbot", "Library System", "Resume Evaluator"],
+  "insights": {
+    "academic": "Strong in AI, needs focus in Maths.",
+    "behavioral": "Consistent project work.",
+    "career": "Suited for AI and Data Science roles."
+  },
+  "chatMocks": [
+    "Focus on revising calculus for better Maths performance.",
+    "Consider building a portfolio around NLP projects.",
+    "Great consistency! Try to present your recent project at a meetup.",
+    "You’re trending well in Python. Explore system design basics next."
+  ]
+}
+
+

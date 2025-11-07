@@ -61,19 +61,6 @@ export function DashboardPage() {
         <h1 className="mb-2" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 700 }}>
           Dashboard Overview
         </h1>
-        <div className="flex items-center gap-2 ml-auto">
-          <label className="text-sm text-gray-600 dark:text-indigo-200">Switch student:</label>
-          <select
-            className="px-3 py-2 rounded-xl bg-white dark:bg-[#14162a] border border-gray-200 dark:border-[#1c2035cc] text-sm"
-            value={studentData?.usn || ''}
-            onChange={(e) => onSelectStudent(e.target.value)}
-          >
-            <option value="" disabled>Select</option>
-            {allStudents.map(s => (
-              <option key={s.usn} value={s.usn}>{s.usn} — {s.name}</option>
-            ))}
-          </select>
-        </div>
       </div>
 
       {/* Profile Summary */}
@@ -125,7 +112,7 @@ export function DashboardPage() {
           </div>
           <div className="text-4xl mb-2 text-violet-600" style={{ fontWeight: 800 }}>12</div>
           <div className="text-gray-600 text-sm">Completed Projects</div>
-          <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-500">
+          <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-.500">
             45% are AI/ML focused
           </div>
         </div>
