@@ -73,7 +73,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1117] p-8">
+    <div className="min-h-screen bg-black p-8">
       <h1 className="mb-6" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 700, ...gradientTextStyle }}>
         Placement Dashboard
       </h1>
