@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Bot, User, Send, Book, BrainCircuit, BarChart3, UserSquare, Settings, Bell, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../src/components/ui/modal'; // Import the Modal component
 import { TopBar } from '../src/components/dashboard/TopBar'; // Import the TopBar component
 
-// Mock data, similar to what might come from localStorage or an API
-const studentData = {
-  name: 'Jane Doe',
-  usn: '1AB23CD001',
-  cgpa: 8.7,
-  semester: 5,
-  email: 'jane.doe@example.com',
-  phone: '123-456-7890',
-  projects: ['AI-Powered Chatbot', 'E-commerce Website'],
-  skills: ['React', 'Node.js', 'Python', 'Machine Learning'],
-};
-
 const StudentDashboard = () => {
   const navigate = useNavigate();
+  const [studentData, setStudentData] = useState(null);
+
+  useEffect(() => {
+    const data = localStorage.getItem('currentStudent');
+    if (data) {
+      setStudentData(JSON.parse(data));
+    } else {
+      // Handle case where student data is not found, maybe redirect to login
+      navigate('/login');
+    }
+  }, [navigate]);
+
   const [messages, setMessages] = useState([
     { from: 'bot', text: "Hello! I'm AI Echo, your campus assistant. How can I help you today?" },
   ]);
@@ -42,8 +42,14 @@ const StudentDashboard = () => {
 
   const handleLogout = () => {
     // Clear user session/storage here
+    localStorage.removeItem('currentStudent');
+    localStorage.removeItem('pendingStudent');
     navigate('/login');
   };
+
+  if (!studentData) {
+    return <div>Loading...</div>; // Or a proper loader
+  }
 
   const dashboardWidgets = [
     {
@@ -60,9 +66,9 @@ const StudentDashboard = () => {
       bg: 'from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30'
     },
     {
-      title: 'Projects',
+      title: 'Attendance',
       icon: <Book size={24} className="text-purple-400" />,
-      value: studentData.projects.length,
+      value: `${studentData.attendance}%`,
       bg: 'from-purple-50 to-fuchsia-50 dark:from-purple-900/30 dark:to-fuchsia-900/30'
     },
     {
@@ -76,6 +82,7 @@ const StudentDashboard = () => {
   return (
     <>
       <TopBar 
+        studentData={studentData}
         onMenuToggle={() => {}} 
         onProfileClick={() => setProfileModalOpen(true)}
         onSettingsClick={() => setSettingsModalOpen(true)}
@@ -92,6 +99,20 @@ const StudentDashboard = () => {
             <div>
               <h1 className="text-3xl font-bold">Welcome, {studentData.name}!</h1>
               <p className="text-muted-foreground">Here's a snapshot of your academic journey.</p>
+            </div>
+            <div className="flex gap-3">
+              <button 
+                onClick={() => navigate('/community')}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                Community
+              </button>
+              <button 
+                onClick={() => navigate('/settings')}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Settings
+              </button>
             </div>
           </motion.div>
 
@@ -126,11 +147,67 @@ const StudentDashboard = () => {
             ))}
           </motion.div>
 
+          {/* Academic Overview */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
+          >
+            {/* Grades Card */}
+            <div className="bg-card border border-border/20 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <BarChart3 className="text-primary"/>
+                Subject Grades
+              </h3>
+              <div className="space-y-3">
+                {Object.entries(studentData.grades || {}).map(([subject, grade]) => (
+                  <div key={subject} className="flex justify-between items-center p-3 bg-muted rounded-lg">
+                    <span className="font-medium">{subject}</span>
+                    <span className="font-bold text-lg">{grade}</span>
+                  </div>
+                ))}
+                {Object.keys(studentData.grades || {}).length === 0 && (
+                  <p className="text-muted-foreground text-center py-4">No grades available yet</p>
+                )}
+              </div>
+            </div>
+
+            {/* Projects Card */}
+            <div className="bg-card border border-border/20 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Book className="text-primary"/>
+                Recent Projects
+              </h3>
+              <div className="space-y-3">
+                {studentData.projects.slice(0, 3).map((project, index) => (
+                  <div key={index} className="p-3 bg-muted rounded-lg">
+                    <h4 className="font-semibold">{project.name}</h4>
+                    {project.description && (
+                      <p className="text-sm text-muted-foreground mt-1">{project.description}</p>
+                    )}
+                  </div>
+                ))}
+                {studentData.projects.length === 0 && (
+                  <p className="text-muted-foreground text-center py-4">No projects added yet</p>
+                )}
+                {studentData.projects.length > 3 && (
+                  <button 
+                    onClick={() => navigate('/profile')}
+                    className="text-sm font-semibold text-indigo-500 dark:text-indigo-300 mt-2 flex items-center gap-1 group"
+                  >
+                    View All Projects <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
           {/* AI Echo Chat */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
             className="bg-card border border-border/20 rounded-2xl shadow-lg"
           >
             <div className="p-4 border-b border-border/20">
@@ -171,14 +248,59 @@ const StudentDashboard = () => {
       {/* Modals */}
       <Modal isOpen={isProfileModalOpen} onClose={() => setProfileModalOpen(false)} title="My Profile">
         <div className="space-y-4">
-          <p><strong>Name:</strong> {studentData.name}</p>
-          <p><strong>USN:</strong> {studentData.usn}</p>
-          <p><strong>Email:</strong> {studentData.email}</p>
-          <p><strong>Phone:</strong> {studentData.phone}</p>
-          <p><strong>CGPA:</strong> {studentData.cgpa}</p>
-          <p><strong>Semester:</strong> {studentData.semester}</p>
-          <p><strong>Projects:</strong> {studentData.projects.join(', ')}</p>
-          <p><strong>Skills:</strong> {studentData.skills.join(', ')}</p>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+              {studentData.name.split(' ').map(n => n[0]).join('')}
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">{studentData.name}</h3>
+              <p className="text-muted-foreground">{studentData.usn}</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">Department</p>
+              <p className="font-semibold">{studentData.department}</p>
+            </div>
+            <div className="p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">Semester</p>
+              <p className="font-semibold">{studentData.semester}</p>
+            </div>
+            <div className="p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">CGPA</p>
+              <p className="font-semibold">{studentData.cgpa}</p>
+            </div>
+            <div className="p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">Attendance</p>
+              <p className="font-semibold">{studentData.attendance}%</p>
+            </div>
+          </div>
+          
+          <div className="mt-6">
+            <h4 className="font-semibold mb-2">Skills</h4>
+            <div className="flex flex-wrap gap-2">
+              {studentData.skills.map((skill, index) => (
+                <span key={index} className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mt-6">
+            <h4 className="font-semibold mb-2">Projects</h4>
+            <div className="space-y-2">
+              {studentData.projects.map((project, index) => (
+                <div key={index} className="p-3 bg-muted rounded-lg">
+                  <p className="font-medium">{project.name}</p>
+                  {project.description && (
+                    <p className="text-sm text-muted-foreground">{project.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </Modal>
 

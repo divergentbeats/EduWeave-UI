@@ -41,9 +41,18 @@ export function DashboardPage() {
   }, [studentData]);
 
   const currentCgpa = useMemo(() => {
-    if (!studentData?.grades) return 8.7;
-    const vals = Object.values(studentData.grades as Record<string, number>);
-    return Number((vals.reduce((a: number, b: any) => a + Number(b), 0) / Math.max(1, vals.length)).toFixed(1));
+    if (!studentData?.cgpa) return 8.7;
+    return studentData.cgpa;
+  }, [studentData]);
+
+  const completedProjects = useMemo(() => {
+    if (!studentData?.projects) return 12;
+    return studentData.projects.length;
+  }, [studentData]);
+
+  const earnedBadges = useMemo(() => {
+    if (!studentData?.achievements) return 5;
+    return studentData.achievements.length;
   }, [studentData]);
 
   const onSelectStudent = async (usn: string) => {
@@ -110,10 +119,15 @@ export function DashboardPage() {
               </svg>
             </div>
           </div>
-          <div className="text-4xl mb-2 text-violet-600" style={{ fontWeight: 800 }}>12</div>
+          <div className="text-4xl mb-2 text-violet-600" style={{ fontWeight: 800 }}>{completedProjects}</div>
           <div className="text-gray-600 text-sm">Completed Projects</div>
-          <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-.500">
-            45% are AI/ML focused
+          <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-500">
+            {studentData?.skills && studentData.skills.length > 0 
+              ? `${Math.round((studentData.skills.filter((skill: string) => 
+                  skill.toLowerCase().includes('ai') || skill.toLowerCase().includes('ml')).length / 
+                  studentData.skills.length) * 100)}% are AI/ML focused`
+              : "Keep building your portfolio"
+            }
           </div>
         </div>
 
@@ -126,10 +140,10 @@ export function DashboardPage() {
               </svg>
             </div>
           </div>
-          <div className="text-4xl mb-2 text-amber-600" style={{ fontWeight: 800 }}>5/6</div>
+          <div className="text-4xl mb-2 text-amber-600" style={{ fontWeight: 800 }}>{earnedBadges}/6</div>
           <div className="text-gray-600 text-sm">Badges Earned</div>
           <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-500">
-            83% completion rate
+            {Math.round((earnedBadges / 6) * 100)}% completion rate
           </div>
         </div>
       </div>

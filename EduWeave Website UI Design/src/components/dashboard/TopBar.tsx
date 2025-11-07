@@ -1,17 +1,29 @@
 import { Bell, Menu, ChevronDown, Moon, Sun } from "lucide-react";
 import { useState } from "react";
-import { useTheme } from "next-themes@0.4.6";
+import { useTheme } from "next-themes";
 
 interface TopBarProps {
+  studentData: {
+    name: string;
+  };
   onMenuToggle: () => void;
   onProfileClick: () => void;
   onSettingsClick: () => void;
   onLogoutClick: () => void;
 }
 
-export function TopBar({ onMenuToggle, onProfileClick, onSettingsClick, onLogoutClick }: TopBarProps) {
+export function TopBar({ studentData, onMenuToggle, onProfileClick, onSettingsClick, onLogoutClick }: TopBarProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const getInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.split(' ');
+    if (nameParts.length > 1) {
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+    }
+    return name[0].toUpperCase();
+  };
 
   return (
     <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#0b0b12]/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-800 px-6 py-4 transition-colors">
@@ -41,10 +53,10 @@ export function TopBar({ onMenuToggle, onProfileClick, onSettingsClick, onLogout
               className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-input/50 rounded-lg transition-colors"
             >
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
-                JD
+                {getInitials(studentData.name)}
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-sm font-semibold">Jane Doe</div>
+                <div className="text-sm font-semibold">{studentData.name}</div>
                 <div className="text-xs text-gray-500">Student</div>
               </div>
               <ChevronDown className="w-4 h-4 text-gray-500" />

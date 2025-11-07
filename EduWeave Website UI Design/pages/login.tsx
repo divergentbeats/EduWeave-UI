@@ -22,9 +22,19 @@ const Login = () => {
       }
     } else {
       if (usn && dob) {
-        // This is the original logic: save details and navigate to the entry page
-        localStorage.setItem('pendingStudent', JSON.stringify({ usn, dob }));
-        navigate('/student-entry');
+        // Check if student entry already exists
+        const existingStudents = JSON.parse(localStorage.getItem('students') || '[]');
+        const existingStudent = existingStudents.find((student: any) => student.usn === usn);
+        
+        if (existingStudent) {
+          // Student entry exists, set as current student and go to dashboard
+          localStorage.setItem('currentStudent', JSON.stringify(existingStudent));
+          navigate('/dashboard');
+        } else {
+          // Student entry doesn't exist, go to student entry page
+          localStorage.setItem('pendingStudent', JSON.stringify({ usn, dob }));
+          navigate('/student-entry');
+        }
       } else {
         alert('Please enter USN and Date of Birth');
       }

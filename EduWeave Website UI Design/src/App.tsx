@@ -1,8 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "../pages/login";
 import StudentEntry from "../pages/student-entry";
 import ProfilePage from "../pages/profile";
+import CommunityPage from '../pages/community';
+import SettingsPage from '../pages/settings';
 import { AppSidebar } from "./components/dashboard/AppSidebar";
 import { TopBar } from "./components/dashboard/TopBar";
 import { DashboardPage } from "./components/pages/DashboardPage";
@@ -12,12 +15,22 @@ import { PredictivePathPage } from "./components/pages/PredictivePathPage";
 import { AIEchoPage } from "./components/pages/AIEchoPage";
 import { AchievementsPage } from "./components/pages/AchievementsPage";
 import { CommunityHubPage } from "./components/pages/CommunityHubPage";
-import { SettingsPage } from "./components/pages/SettingsPage";
 import AdminDashboard from "./components/pages/AdminDashboard";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
+  const [studentData, setStudentData] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const data = localStorage.getItem('currentStudent');
+    if (data) {
+      setStudentData(JSON.parse(data));
+    } else {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const renderView = () => {
     switch (currentView) {
@@ -42,6 +55,10 @@ function Dashboard() {
     }
   };
 
+  if (!studentData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 dark:from-[#0b0b12] dark:via-[#0b0b12] dark:to-[#0b0b12] flex transition-colors">
       {/* Sidebar */}
@@ -56,7 +73,15 @@ function Dashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Bar */}
         <TopBar
+          studentData={studentData}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          onProfileClick={() => navigate('/profile')}
+          onSettingsClick={() => navigate('/settings')}
+          onLogoutClick={() => {
+            localStorage.removeItem('currentStudent');
+            localStorage.removeItem('students');
+            navigate('/login');
+          }}
           currentView={currentView}
         />
 
@@ -81,6 +106,8 @@ export default function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </Router>
   );

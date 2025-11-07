@@ -1,1 +1,5 @@
 # Node\nnode_modules/\n**/node_modules/\n.dist/\ndist/\nbuild/\n**/build/\n.env\n.env.*\n.ai/\n.cache/\n
+node_modules/
+.next/
+dist/
+build/
