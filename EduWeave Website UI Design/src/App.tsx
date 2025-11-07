@@ -105,7 +105,7 @@ export default function App() {
         <Route path="/student-entry" element={<StudentEntry />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-dashboard" element={<div className="min-h-screen bg-black"><AdminDashboard /></div>} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>

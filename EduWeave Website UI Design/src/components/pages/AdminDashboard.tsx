@@ -91,7 +91,7 @@ const AdminDashboard = () => {
             className="relative p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
           >
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM12 1a9 9 0 00-9 9v7l-2 2v1h20v-1l-2-2V10a9 9 0 00-9-9zM12 22a2 2 0 01-2-2h4a2 2 0 01-2 2z" />
             </svg>
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               {notifications.length}

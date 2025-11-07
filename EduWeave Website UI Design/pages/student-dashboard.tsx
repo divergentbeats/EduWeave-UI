@@ -4,6 +4,7 @@ import { ArrowRight, Bot, User, Send, Book, BrainCircuit, BarChart3, UserSquare,
 import { useNavigate } from 'react-router-dom';
 import Modal from '../src/components/ui/modal'; // Import the Modal component
 import { TopBar } from '../src/components/dashboard/TopBar'; // Import the TopBar component
+import { populateMockData } from '../src/utils/mockStudentData';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -14,8 +15,10 @@ const StudentDashboard = () => {
     if (data) {
       setStudentData(JSON.parse(data));
     } else {
-      // Handle case where student data is not found, maybe redirect to login
-      navigate('/login');
+      // Populate mock data for demo
+      populateMockData();
+      const mockData = localStorage.getItem('currentStudent');
+      setStudentData(JSON.parse(mockData));
     }
   }, [navigate]);
 
@@ -26,6 +29,39 @@ const StudentDashboard = () => {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Mock notification data
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: 'Assignment Due',
+      message: 'Your Machine Learning assignment is due tomorrow at 11:59 PM',
+      type: 'warning',
+      time: '2 hours ago'
+    },
+    {
+      id: 2,
+      title: 'New Grade Posted',
+      message: 'Your Database Management System grade has been posted: A-',
+      type: 'success',
+      time: '1 day ago'
+    },
+    {
+      id: 3,
+      title: 'Campus Event',
+      message: 'Tech Talk: "AI in Healthcare" scheduled for Friday, 3:00 PM',
+      type: 'info',
+      time: '2 days ago'
+    },
+    {
+      id: 4,
+      title: 'Attendance Alert',
+      message: 'Your attendance in Computer Networks is below 75%',
+      type: 'warning',
+      time: '3 days ago'
+    }
+  ]);
 
   const handleSendMessage = () => {
     if (input.trim() === '') return;
@@ -56,25 +92,25 @@ const StudentDashboard = () => {
       title: 'My Profile',
       icon: <UserSquare size={24} className="text-indigo-400" />,
       value: 'View Full Profile',
-      action: () => setProfileModalOpen(true),
+      action: () => navigate('/profile'),
       bg: 'from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30'
     },
     {
       title: 'Current CGPA',
       icon: <BarChart3 size={24} className="text-green-400" />,
-      value: studentData.cgpa,
+      value: studentData?.cgpa || 'N/A',
       bg: 'from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30'
     },
     {
       title: 'Attendance',
       icon: <Book size={24} className="text-purple-400" />,
-      value: `${studentData.attendance}%`,
+      value: studentData?.attendance ? `${studentData.attendance}%` : 'N/A',
       bg: 'from-purple-50 to-fuchsia-50 dark:from-purple-900/30 dark:to-fuchsia-900/30'
     },
     {
       title: 'Skills',
       icon: <BrainCircuit size={24} className="text-orange-400" />,
-      value: studentData.skills.length,
+      value: studentData?.skills?.length || 0,
       bg: 'from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30'
     },
   ];
@@ -86,8 +122,36 @@ const StudentDashboard = () => {
         onMenuToggle={() => {}} 
         onProfileClick={() => setProfileModalOpen(true)}
         onSettingsClick={() => setSettingsModalOpen(true)}
+        onNotificationsClick={() => setShowNotifications(!showNotifications)}
         onLogoutClick={handleLogout}      
       />
+      
+      {/* Notification Dropdown */}
+      {showNotifications && (
+        <div className="absolute right-6 top-20 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
+          </div>
+          <div className="max-h-96 overflow-y-auto">
+            {notifications.map((notification) => (
+              <div key={notification.id} className="p-4 border-b border-gray-100 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <div className="flex items-start gap-3">
+                  <div className={`w-2 h-2 rounded-full mt-2 ${
+                    notification.type === 'info' ? 'bg-blue-500' :
+                    notification.type === 'success' ? 'bg-green-500' :
+                    notification.type === 'warning' ? 'bg-yellow-500' : 'bg-gray-500'
+                  }`}></div>
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 dark:text-white">{notification.title}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{notification.message}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{notification.time}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="min-h-screen bg-background text-foreground p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -180,7 +244,7 @@ const StudentDashboard = () => {
                 Recent Projects
               </h3>
               <div className="space-y-3">
-                {studentData.projects.slice(0, 3).map((project, index) => (
+                {studentData.projects?.slice(0, 3).map((project, index) => (
                   <div key={index} className="p-3 bg-muted rounded-lg">
                     <h4 className="font-semibold">{project.name}</h4>
                     {project.description && (
@@ -188,10 +252,10 @@ const StudentDashboard = () => {
                     )}
                   </div>
                 ))}
-                {studentData.projects.length === 0 && (
+                {(studentData.projects?.length || 0) === 0 && (
                   <p className="text-muted-foreground text-center py-4">No projects added yet</p>
                 )}
-                {studentData.projects.length > 3 && (
+                {studentData.projects?.length > 3 && (
                   <button 
                     onClick={() => navigate('/profile')}
                     className="text-sm font-semibold text-indigo-500 dark:text-indigo-300 mt-2 flex items-center gap-1 group"
@@ -305,10 +369,47 @@ const StudentDashboard = () => {
       </Modal>
 
       <Modal isOpen={isSettingsModalOpen} onClose={() => setSettingsModalOpen(false)} title="Settings">
-        <div className="space-y-4">
-          <p><strong>Theme:</strong> Dark</p>
-          <p><strong>Language:</strong> English</p>
-          <p><strong>Notifications:</strong> Enabled</p>
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Appearance</h3>
+            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+              <label htmlFor="theme-select" className="font-medium">Theme</label>
+              <select id="theme-select" className="bg-input-background border border-border rounded-md px-2 py-1">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Preferences</h3>
+            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+              <label htmlFor="language-select" className="font-medium">Language</label>
+              <select id="language-select" className="bg-input-background border border-border rounded-md px-2 py-1">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-muted rounded-lg mt-2">
+              <span className="font-medium">Email Notifications</span>
+              <label htmlFor="notif-toggle" className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" value="" id="notif-toggle" className="sr-only peer" defaultChecked />
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Account</h3>
+            <button className="w-full text-left p-3 bg-muted rounded-lg font-medium hover:bg-muted/80 transition-colors">
+              Change Password
+            </button>
+            <button className="w-full text-left p-3 mt-2 bg-destructive/10 text-destructive rounded-lg font-medium hover:bg-destructive/20 transition-colors">
+              Delete Account
+            </button>
+          </div>
         </div>
       </Modal>
 
