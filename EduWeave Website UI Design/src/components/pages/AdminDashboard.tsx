@@ -12,6 +12,13 @@ const AdminDashboard = () => {
   const [allStudents, setAllStudents] = useState<Array<{usn:string;name:string}>>([]);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [selectedStudentUsn, setSelectedStudentUsn] = useState<string>('');
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: 'New Student Registration', message: '5 new students registered today', time: '2 hours ago', type: 'info' },
+    { id: 2, title: 'Placement Update', message: '3 students got placed in Tech Corp', time: '4 hours ago', type: 'success' },
+    { id: 3, title: 'Low Attendance Alert', message: '15 students have attendance below 75%', time: '6 hours ago', type: 'warning' },
+    { id: 4, title: 'System Maintenance', message: 'Scheduled maintenance tonight at 2 AM', time: '1 day ago', type: 'info' }
+  ]);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -74,9 +81,50 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-black p-8">
-      <h1 className="mb-6" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 700, ...gradientTextStyle }}>
-        Placement Dashboard
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: 700, ...gradientTextStyle }}>
+          Placement Dashboard
+        </h1>
+        <div className="relative">
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className="relative p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg>
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {notifications.length}
+            </span>
+          </button>
+          
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50">
+              <div className="p-4 border-b border-gray-700">
+                <h3 className="text-white font-semibold">Notifications</h3>
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                {notifications.map((notification) => (
+                  <div key={notification.id} className="p-4 border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-2 h-2 rounded-full mt-2 ${
+                        notification.type === 'info' ? 'bg-blue-500' :
+                        notification.type === 'success' ? 'bg-green-500' :
+                        notification.type === 'warning' ? 'bg-yellow-500' : 'bg-gray-500'
+                      }`}></div>
+                      <div className="flex-1">
+                        <h4 className="text-white font-medium text-sm">{notification.title}</h4>
+                        <p className="text-gray-300 text-sm mt-1">{notification.message}</p>
+                        <p className="text-gray-500 text-xs mt-2">{notification.time}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {/* Main Stats */}

@@ -2,7 +2,7 @@ import { Sparkles, RefreshCw, Calendar, TrendingUp, AlertTriangle, CheckCircle }
 import { Button } from "../ui/button";
 import { useState } from "react";
 
-const insightsData = [
+const insightsDataSet1 = [
   {
     category: "Academic Performance",
     insight: "Your CGPA has shown consistent improvement over the past 3 semesters. Continue this trajectory by maintaining focus on core subjects like DBMS and Computer Networks.",
@@ -35,6 +35,107 @@ const insightsData = [
   }
 ];
 
+const insightsDataSet2 = [
+  {
+    category: "Technical Skills",
+    insight: "Your coding skills in Java and Python are strong. Consider learning Go or Rust to expand your backend development capabilities and stay competitive in the market.",
+    type: "suggestion",
+    priority: "medium"
+  },
+  {
+    category: "Academic Focus",
+    insight: "Your performance in Data Structures and Algorithms is exceptional. Maintain this strength as it's crucial for technical interviews at top companies.",
+    type: "positive",
+    priority: "high"
+  },
+  {
+    category: "Industry Readiness",
+    insight: "You need more practical experience with version control systems. Consider contributing to open-source projects to improve your Git skills and collaboration abilities.",
+    type: "warning",
+    priority: "medium"
+  },
+  {
+    category: "Soft Skills",
+    insight: "Your communication skills need improvement. Join debate clubs or presentation groups to enhance your ability to articulate technical concepts clearly.",
+    type: "warning",
+    priority: "low"
+  },
+  {
+    category: "Career Direction",
+    insight: "With your strong foundation in computer science, consider specializing in cybersecurity or cloud architecture as these fields have high demand and growth potential.",
+    type: "suggestion",
+    priority: "medium"
+  }
+];
+
+const insightsDataSet3 = [
+  {
+    category: "Project Quality",
+    insight: "Your recent web development projects show excellent code organization and documentation. Continue this practice as it demonstrates professional development standards.",
+    type: "positive",
+    priority: "high"
+  },
+  {
+    category: "Time Management",
+    insight: "Your assignment submission pattern shows procrastination tendencies. Try breaking large tasks into smaller milestones to improve consistency and reduce stress.",
+    type: "warning",
+    priority: "medium"
+  },
+  {
+    category: "Technical Breadth",
+    insight: "You have deep knowledge in frontend technologies. Expanding into backend technologies like Node.js or Django would make you a full-stack developer.",
+    type: "suggestion",
+    priority: "medium"
+  },
+  {
+    category: "Learning Velocity",
+    insight: "Your ability to learn new frameworks quickly is impressive. This adaptability will serve you well in the rapidly evolving tech industry.",
+    type: "positive",
+    priority: "low"
+  },
+  {
+    category: "Interview Preparation",
+    insight: "Based on your technical skills, you should start practicing system design interviews. Your current level suggests readiness for mid-level positions.",
+    type: "suggestion",
+    priority: "high"
+  }
+];
+
+const insightsDataSet4 = [
+  {
+    category: "Code Quality",
+    insight: "Your recent submissions show significant improvement in code readability and commenting. This attention to detail will impress potential employers during code reviews.",
+    type: "positive",
+    priority: "medium"
+  },
+  {
+    category: "Database Skills",
+    insight: "Your SQL query optimization skills are below industry standards. Practice with complex joins and indexing strategies to improve database performance understanding.",
+    type: "warning",
+    priority: "high"
+  },
+  {
+    category: "Team Collaboration",
+    insight: "Your group project contributions show strong leadership qualities. Consider taking on more challenging team roles to further develop project management skills.",
+    type: "positive",
+    priority: "low"
+  },
+  {
+    category: "Emerging Technologies",
+    insight: "You show great interest in AI/ML. Consider exploring blockchain technology or quantum computing as these are emerging fields with significant future potential.",
+    type: "suggestion",
+    priority: "medium"
+  },
+  {
+    category: "Career Timeline",
+    insight: "With your current progress, you're 6 months ahead of typical students. Consider applying for internships earlier than planned to gain valuable industry experience.",
+    type: "positive",
+    priority: "high"
+  }
+];
+
+const allInsightsDataSets = [insightsDataSet1, insightsDataSet2, insightsDataSet3, insightsDataSet4];
+
 const growthMetrics = [
   { label: "Academic Growth", value: 92, trend: "+8%", color: "indigo" },
   { label: "Skill Acquisition", value: 88, trend: "+12%", color: "purple" },
@@ -45,10 +146,16 @@ const growthMetrics = [
 export function AIInsightsPage() {
   const [lastUpdated, setLastUpdated] = useState("2 hours ago");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentDataSetIndex, setCurrentDataSetIndex] = useState(0);
+  const [currentInsights, setCurrentInsights] = useState(insightsDataSet1);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
+      // Cycle to next dataset
+      const nextIndex = (currentDataSetIndex + 1) % allInsightsDataSets.length;
+      setCurrentDataSetIndex(nextIndex);
+      setCurrentInsights(allInsightsDataSets[nextIndex]);
       setLastUpdated("Just now");
       setIsRefreshing(false);
     }, 1500);
@@ -153,7 +260,7 @@ export function AIInsightsPage() {
       <div>
         <h2 className="mb-4" style={{ fontSize: '1.5rem', fontWeight: 700 }}>Detailed Analysis</h2>
         <div className="space-y-4">
-          {insightsData.map((item, index) => (
+          {currentInsights.map((item, index) => (
             <div
               key={index}
               className={`p-6 rounded-2xl border-2 shadow-lg hover:shadow-xl transition-all duration-300 ${
